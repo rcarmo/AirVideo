@@ -7,7 +7,7 @@ from media import client_map_avdict, FolderObject, VideoObject
 class AVClient:
 	
 	udid = "89eae483355719f119d698e8d11e8b356525ecfb"
-	allowed_bitrates = AVBitrateList(["1280", "1536", "2048", "2560"])
+	allowed_bitrates = AVBitrateList(["2048", "2560"])
 	
 	def __init__(self, host, port=45631):
 	    self.endpoint = "http://%s:%d/service" % (host, port)
