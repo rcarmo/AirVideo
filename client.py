@@ -30,11 +30,16 @@ class AVClient:
 		return [client_map_avdict(self, i) for i in items]			
 	
 	@Retry(3, delay=1)
-	def get_detail(self, video):
-		detail_resp = self._request("browseService", 
+	def get_item(self, path):
+		item = self._request("browseService", 
 							"getItemsWithDetail", 
-								[video.path])
-		return detail_resp.data['result'][0].data['detail'].data
+								[path])['result'][0]
+		
+		return client_map_avdict(self, item)
+	
+	def get_detail(self, video):
+		item = self.get_item(video.path)
+		return item.detail
 	
 	def get_url(self, video, live):
 		if live:
@@ -97,4 +102,3 @@ class AVClient:
 		
 		return AVDict("air.video.ConversionRequest", convertreq)
 		
-			
