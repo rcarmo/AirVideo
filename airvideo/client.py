@@ -4,12 +4,6 @@ from utils import Retry
 from avmap import AVDict, AVBitrateList
 from media import client_map_avdict, FolderObject, VideoObject
 
-#urllib2.install_opener(
-#    urllib2.build_opener(
-#        urllib2.ProxyHandler({'http': '127.0.0.1:8888'})
-#    )
-#)
-
 class AVClient:
 	
 	udid = "89eae483355719f119d698e8d11e8b356525ecfb"
