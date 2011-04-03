@@ -3,11 +3,7 @@ from struct import pack, unpack, calcsize
 from shutil import copyfileobj
 from UserDict import UserDict
 import struct
-
-try:
-	import cStringIO as StringIO
-except:
-	import StringIO
+import StringIO
 	
 from utils import print_and_return, pprint
 
@@ -43,6 +39,7 @@ def avdict(obj, name = None):
 	# attribute of the object
 	d = AVDict(name)
 	for attr in dir(obj):
+		print attr
 		# Do not include hidden attributes
 		if attr.startswith("_"):
 			continue
@@ -135,7 +132,7 @@ def _dump(obj, fp, counter = 0):
 	elif isinstance(obj, AVDict):
 		if obj.name == "air.video.ConversionRequest": 
 			version = 240
-		if obj.name == "air.video.BrowseRequest":
+		elif obj.name == "air.video.BrowseRequest":
 			version = 240
 		else:		
 			version = 1
@@ -165,6 +162,7 @@ def _dump(obj, fp, counter = 0):
 	elif isinstance(obj, float):
 		fp.write(pack("!cd", 'f', obj))
 	else:
+		print "using fallback 'avdict' method for %s" % obj
 		#If all else fails, try to convert this into a AVDict
 		_dump(avdict(obj), fp)
 

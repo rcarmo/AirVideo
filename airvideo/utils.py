@@ -9,7 +9,6 @@ def singleton(cls):
 	return getinstance
 
 def print_and_return(obj, ident):
-	#if DEBUG:
 	#print " "*2*ident + "%s" % obj
 	return obj
 
