@@ -7,9 +7,15 @@ def client_map_avdict(client, avd):
 							avd.data['name'], 
 							avd.data['itemId'])
 	elif avd.name in VIDEO_RETURNTYPES:
+		if avd.data['detail']:
+			detail = avd.data['detail'].data
+		else:
+			detail = None
+			
 		return VideoObject(client,
 							avd.data['name'], 
-							avd.data['itemId'])
+							avd.data['itemId'],
+							detail)
 	else:
 		print "unknown return type: %s" % avd.name
 
@@ -18,20 +24,30 @@ class FolderObject:
 		self.client = client
 		self.name = name
 		self.path = itemId
+		self.isFolder = True
 	
-	def contents(self):
-		return self.client.browse(self)
+	def __getattr__(self, name):
+		if name == "contents":
+			return self.client.browse(self)
+		else:
+			return object.__getattr__(self, name)
 		
 	def search(self, search_term):
 		#TODO - implement search
 		pass
 		
 class VideoObject:
-	def __init__(self, client, name, itemId):	
+	def __init__(self, client, name, itemId, detail = None):	
 		self.client = client
 		self.name = name
 		self.path = itemId
-		self.hydrated = False
+		self.isFolder = False
+		
+		if detail:
+			self.detail = detail
+			self.hydrated = True
+		else:
+			self.hydrated = False
 	
 	def __getattr__(self, name):
 		if name == "detail":
