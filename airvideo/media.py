@@ -23,6 +23,7 @@ class FolderObject:
 		return self.client.browse(self)
 		
 	def search(self, search_term):
+		#TODO - implement search
 		pass
 		
 class VideoObject:
@@ -41,6 +42,7 @@ class VideoObject:
 			return self.detail['videoThumbnail']
 		elif name == "video_stream":	
 			self._fetch_details()
+			#TODO - figure out which stream is which
 			return self.detail['streams'][0]
 		else:
 			return object.__getattr__(self, name)

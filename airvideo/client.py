@@ -1,5 +1,6 @@
 import urllib2
 import avmap
+from utils import Retry
 from avmap import AVDict, AVBitrateList
 from media import client_map_avdict, FolderObject, VideoObject
 
@@ -34,6 +35,13 @@ class AVClient:
 		
 		return [client_map_avdict(self, i) for i in items]			
 	
+	@Retry(3, delay=1)
+	def get_detail(self, video):
+		detail_resp = self._request("browseService", 
+							"getItemsWithDetail", 
+								[video.path])
+		return detail_resp.data['result'][0].data['detail'].data
+	
 	def get_url(self, video, live):
 		if live:
 			url_resp = self._request("livePlaybackService", 
@@ -45,13 +53,6 @@ class AVClient:
 							video.path)	
 		
 		return url_resp['result']['contentURL']									
-	
-	def get_detail(self, video):
-		detail_resp = self._request("browseService", 
-						"getItemsWithDetail", 
-						[video.path])
-		
-		return detail_resp.data['result'][0].data['detail'].data
 			
 	def _request(self, service, method, params):
 		headers = { 
