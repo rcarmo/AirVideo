@@ -11,7 +11,7 @@ def client_map_avdict(client, avd):
 							avd.data['name'], 
 							avd.data['itemId'])
 	else:
-		print "unknown media type: %s" % avd.name
+		print "unknown return type: %s" % avd.name
 
 class FolderObject:
 	def __init__(self, client, name, itemId):
