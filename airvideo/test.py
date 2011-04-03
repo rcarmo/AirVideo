@@ -1,6 +1,5 @@
 from client import AVClient
 
-c = AVClient("10.0.0.3")
-lom = c.browse("1fd9e1cf-ef8d-4605-a061-553346d12b9b")
-lom_s1 = lom[0]
-print lom_s1.contents()[3].live_url()
+c = AVClient("10.0.0.10")
+all_dirs = c.browse()
+print all_dirs[0].contents()[2].contents()[1].contents()[2].contents()[11].live_url()

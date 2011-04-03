@@ -23,7 +23,7 @@ class AVClient:
 		
 		browsereq = { 
 			"folderId" : path, 
-			"preloadDetails" : True
+			"preloadDetails" : False
 		}
 		
 		browse_resp = self._request("browseService", 
@@ -45,7 +45,14 @@ class AVClient:
 							video.path)	
 		
 		return url_resp['result']['contentURL']									
+	
+	def get_detail(self, video):
+		detail_resp = self._request("browseService", 
+						"getItemsWithDetail", 
+						[video.path])
 		
+		return detail_resp.data['result'][0].data['detail'].data
+			
 	def _request(self, service, method, params):
 		headers = { 
 			'User-Agent' : "AirVideo/2.4.0 CFNetwork/459 Darwin/10.0.0d3",

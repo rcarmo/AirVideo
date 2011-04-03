@@ -9,8 +9,7 @@ def client_map_avdict(client, avd):
 	elif avd.name in VIDEO_RETURNTYPES:
 		return VideoObject(client,
 							avd.data['name'], 
-							avd.data['itemId'], 
-							avd.data['detail'])
+							avd.data['itemId'])
 	else:
 		print "unknown media type: %s" % avd.name
 
@@ -27,16 +26,31 @@ class FolderObject:
 		pass
 		
 class VideoObject:
-	def __init__(self, client, name, itemId, detail):	
+	def __init__(self, client, name, itemId):	
 		self.client = client
 		self.name = name
 		self.path = itemId
-		self.detail = detail.data
+		self.hydrated = False
+	
+	def __getattr__(self, name):
+		if name == "detail":
+			self._fetch_details()
+			return self.detail
+		elif name == "thumbnail_image":
+			self._fetch_details()
+			return self.detail['videoThumbnail']
+		elif name == "video_stream":	
+			self._fetch_details()
+			return self.detail['streams'][0]
+		else:
+			return object.__getattr__(self, name)
+	
+	def _fetch_details(self):
+		if self.hydrated:
+			return
 		
-		self.thumbnail_image = self.detail['videoThumbnail']
-		# TODO - Actually check which stream is which
-		self.video_stream = self.detail['streams'][0]
-		self.audio_stream = self.detail['streams'][1]
+		self.detail = self.client.get_detail(self)
+		self.hydrated = True
 		
 	def url(self):
 		return self.client.get_url(self, False)	

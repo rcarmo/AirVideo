@@ -8,14 +8,6 @@ def singleton(cls):
 		return instance_container[0]
 	return getinstance
 
-def print_and_return(obj, ident):
-	#print " "*2*ident + "%s" % obj
-	return obj
-
-def pprint(obj, level=1):
-	import json
-	print json.dumps(obj, cls=AVEncoder, indent=4)
-
 class AVEncoder(json.JSONEncoder):
 	def default(self, obj):
 		if hasattr(obj, 'name') and hasattr(obj, "data"):

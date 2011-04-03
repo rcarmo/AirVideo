@@ -1,11 +1,8 @@
 import os
+import StringIO
 from struct import pack, unpack, calcsize
 from shutil import copyfileobj
 from UserDict import UserDict
-import struct
-import StringIO
-	
-from utils import print_and_return, pprint
 
 read_and_unpack = lambda f, o: unpack(f, o.read(calcsize(f)))
 
@@ -23,7 +20,6 @@ class AVDict(UserDict):
 	def __str__(self):
 		return "<AVDict, name: %s, items: {%s}>" % (self.name, 
 			', '.join([('%s: %s' % (k, v)) for k, v in self.data.iteritems()]))
-		#return self.__pprint__()
 	
 	def __repr__(self):
 		return self.__str__()
@@ -62,7 +58,7 @@ def load(stream):
 
 def _load(stream, ident=0):
 	id_ = read_and_unpack("c", stream)[0]
-	d = lambda data, s=ident: print_and_return(data, s)
+	d = lambda data, s=ident: data
 	if id_ == "a" or id_ == "e" or id_ == "d":
 		d("List [")
 		c, n = read_and_unpack("!LL", stream)
