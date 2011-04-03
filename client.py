@@ -27,7 +27,7 @@ class AVClient:
 		
 		items = browse_resp['result']['items']
 		
-		return [client_map_avdict(self, i) for i in items]			
+		return [ii for ii in [client_map_avdict(self, i) for i in items] if ii]
 	
 	@Retry(3, delay=1)
 	def get_item(self, path):
