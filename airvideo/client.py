@@ -44,7 +44,33 @@ class AVClient:
 
     def get_queue(self):
         url_resp = self._request("conversionService", "getConversionSnapshot")
-        return url_resp['result'].items()
+        """ queue lists pending items, convertedItem is the current conversion with an eta and a percentDone """
+        return url_resp['result']
+    
+    def get_conversion_location(self):
+        """ TODO: missing arguments """
+        url_resp = self._request("conversionService", "getConversionLocation")
+        return url_resp['result']
+
+    def convert_item(self, item):
+        """ TODO: missing arguments - an air.video.ConversionRequest
+        allowedBitratesLocal 1536
+        allowedBitratesRemote 384"""
+        url_resp = self._request("conversionService", "convertItem")
+        return url_resp['result']
+
+    def pause_queue(self):
+        url_resp = self._request("conversionService", "pause")
+        return url_resp['result']
+
+    def resume_queue(self):
+        url_resp = self._request("conversionService", "resume")
+        return url_resp['result']
+
+    def remove_from_queue(self, item):
+        """ TODO: missing arguments """
+        url_resp = self._request("conversionService", "remove")
+        return url_resp['result']
     
     def get_detail(self, video):
         item = self.get_item(video.path)
