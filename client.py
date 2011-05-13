@@ -1,5 +1,6 @@
 import urllib2
 import avmap
+from hashlib import sha1
 from utils import Retry
 from avmap import AVDict, AVBitrateList
 from media import client_map_avdict, FolderObject, VideoObject
@@ -9,9 +10,13 @@ class AVClient:
 	udid = "89eae483355719f119d698e8d11e8b356525ecfb"
 	allowed_bitrates = AVBitrateList(["2048", "2560"])
 	
-	def __init__(self, host, port=45631):
-	    self.endpoint = "http://%s:%d/service" % (host, port)
-	
+    def __init__(self, host, port=45631, password=None):
+        self.endpoint = "http://%s:%d/service" % (host, port)
+        if password:
+            self.digest = sha1("S@17" + password + "@1r").hexdigest().upper()
+        else:
+            self.digest = None
+
 	def browse(self, path=None):
 		if isinstance(path, FolderObject):
 			path = path.path
@@ -69,6 +74,8 @@ class AVClient:
 			'clientIdentifier' : self.udid,
 			'parameters' : [params]
 		}
+        if self.digest:                 
+            avrequest['passwordDigest'] = self.digest
 		
 		post_body = avmap.dumps(AVDict("air.connect.Request", avrequest))
 		
