@@ -1,4 +1,7 @@
-import json
+try:
+    import json
+except:
+    import simplejson as json
 import time
 
 def singleton(cls):
