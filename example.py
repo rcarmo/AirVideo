@@ -4,7 +4,7 @@ import os
 
 def main():
   # connect
-  c = AVClient('locahost', password="password")
+  c = AVClient('localhost', password="password")
 
   # look for our folder
   path = filter(lambda x: x.name == 'my videos', c.browse()[0].contents)[0].path
